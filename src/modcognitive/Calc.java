@@ -103,7 +103,7 @@ public class Calc {
     
     public Mot prochainMot(Mot courant,  List<Mot> listeMots)
     {
-        courant.mem = ModCognitive.TAILLE_MEMOIRE;
+        courant.mem  = ModCognitive.TAILLE_MEMOIRE;
          for (int i = 0; i < listeMots.size() ; i++) {
              listeMots.get(i).setScoreActuel(listeMots.get(i).scoreSemantique);
              listeMots.get(i).setDistanceActuelle(calcDistance(courant, listeMots.get(i)));
