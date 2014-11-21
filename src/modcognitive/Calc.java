@@ -77,7 +77,7 @@ public class Calc {
     
     public void calcSemantique(Mot courant, List<Mot> listeMots){
         for (int i = 0; i < listeMots.size() ; i++) {
-            if(listeMots.get(i).distanceActuelle < 0.3)
+            if(listeMots.get(i).distanceActuelle < 0.5)
                 listeMots.get(i).scoreSemantique += (courant.sem-0.3)*5;
             listeMots.get(i).augmenterScore(-courant.sem*listeMots.get(i).distanceActuelle*5);
          }
@@ -85,18 +85,18 @@ public class Calc {
     
     private void calcTaille(List<Mot> listeMots) {
         for (int i = 0; i < listeMots.size() ; i++) {
-            listeMots.get(i).augmenterScore(listeMots.get(i).taille/5);
-            listeMots.get(i).augmenterScore(-listeMots.get(i).distanceActuelle/2);
+            listeMots.get(i).augmenterScore(listeMots.get(i).taille/10);
+            listeMots.get(i).augmenterScore(-listeMots.get(i).distanceActuelle/3);
          }
     }
 
     private void calcMemoire(List<Mot> listeMots) {
         for (int i = 0; i < listeMots.size() ; i++) {         
-            if(listeMots.get(i).mem==7)
+            if(listeMots.get(i).mem==ModCognitive.TAILLE_MEMOIRE)
                 listeMots.get(i).augmenterScore(-10);
             if(listeMots.get(i).mem != 0)
                listeMots.get(i).mem--;
-            listeMots.get(i).augmenterScore(-listeMots.get(i).mem*2);
+            listeMots.get(i).augmenterScore(-listeMots.get(i).mem*3);
          }
         
     }

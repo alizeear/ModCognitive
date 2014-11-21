@@ -13,9 +13,9 @@ public class ModCognitive {
     public static void main(String[] args) throws IOException {
 
         Datas data = new Datas(40);
-        File fCoord = new File("datas/Coordonnees/sportsem_coord.txt");
-        File fSem = new File("datas/Semantique/sportsem_cos.txt");
-        File fTaille = new File("datas/TailleMots/sportsem_tailleV3.txt");
+        File fCoord = new File("datas/Coordonnees/recipsem_coord.txt");
+        File fSem = new File("datas/Semantique/recipsem_cos.txt");
+        File fTaille = new File("datas/TailleMots/recipsem_tailleV3.txt");
         data.extractDonnees(fSem, Datas.typeSem);
         data.extractDonnees(fTaille, Datas.typeTaille);
         data.extractDonnees(fCoord, Datas.typeCoord);
