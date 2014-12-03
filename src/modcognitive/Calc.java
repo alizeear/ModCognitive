@@ -16,6 +16,7 @@ import java.util.Map;
  * @author Jo
  */
 public class Calc {
+     public final int TAILLE_MEMOIRE=15;
     /**
      * Fonctionne avec les Maps, on ne l'utilise donc plus
      * 
@@ -77,33 +78,39 @@ public class Calc {
     
     public void calcSemantique(Mot courant, List<Mot> listeMots){
         for (int i = 0; i < listeMots.size() ; i++) {
-            if(listeMots.get(i).distanceActuelle < 0.5)
+            if(listeMots.get(i).distanceActuelle < 0.3)
                 listeMots.get(i).scoreSemantique += (courant.sem-0.3)*5;
+            //Plus la sémantique est forte plus la zone autour de ce mot aura un score élevé
             listeMots.get(i).augmenterScore(-courant.sem*listeMots.get(i).distanceActuelle*5);
+            // Plus la sémantique est forte plus les mots à faible distance auront un score élevé
          }
     }
     
     private void calcTaille(List<Mot> listeMots) {
         for (int i = 0; i < listeMots.size() ; i++) {
             listeMots.get(i).augmenterScore(listeMots.get(i).taille/10);
-            listeMots.get(i).augmenterScore(-listeMots.get(i).distanceActuelle/3);
+            //Plus la taille est grande plus le score du mot sera élevé
+            listeMots.get(i).augmenterScore(-listeMots.get(i).distanceActuelle/6);
+            //Plus la distance est faible plus le score du mot sera élevé
          }
     }
 
     private void calcMemoire(List<Mot> listeMots) {
         for (int i = 0; i < listeMots.size() ; i++) {         
-            if(listeMots.get(i).mem==ModCognitive.TAILLE_MEMOIRE)
-                listeMots.get(i).augmenterScore(-10);
+            if(listeMots.get(i).mem==TAILLE_MEMOIRE)
+                listeMots.get(i).augmenterScore(-1000);
+            // Le mot que l'on vient de voir a un score très faible
             if(listeMots.get(i).mem != 0)
                listeMots.get(i).mem--;
-            listeMots.get(i).augmenterScore(-listeMots.get(i).mem*3);
+            listeMots.get(i).augmenterScore(-listeMots.get(i).mem*100);
+            // Les mots que l'on a déjà vu ont un score plus faible (Plus il est récent plus son score est faible)
          }
         
     }
     
     public Mot prochainMot(Mot courant,  List<Mot> listeMots)
     {
-        courant.mem  = ModCognitive.TAILLE_MEMOIRE;
+        courant.mem  = TAILLE_MEMOIRE;
          for (int i = 0; i < listeMots.size() ; i++) {
              listeMots.get(i).setScoreActuel(listeMots.get(i).scoreSemantique);
              listeMots.get(i).setDistanceActuelle(calcDistance(courant, listeMots.get(i)));
