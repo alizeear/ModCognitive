@@ -79,8 +79,8 @@ public class Datas {
         while ((ligne = buff.readLine()) != null) {
             if(ligne.indexOf(sujet+','+carte)!=-1){
                 String[] array = ligne.split(",");
-                x = Double.parseDouble(array[8]);
-                y = Double.parseDouble(array[9]);
+                x = Double.parseDouble(array[7]);
+                y = Double.parseDouble(array[8]);
                 x = (x/1024)*2-1;
                 y = (((768-y)/768)*2)-1;
                 coordonneesHumains.add(new Coordonnees(x, y));

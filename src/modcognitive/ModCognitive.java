@@ -17,14 +17,17 @@ public class ModCognitive {
         File fSem = new File("datas/Semantique/alim1sem_cos.txt");
         File fTaille = new File("datas/TailleMots/alim1sem_tailleV3.txt");
         File fHumain = new File("datas/Humains/dataHumains.txt");
-        data.fixationsHumain(fHumain, "11", "alim1");
+        data.fixationsHumain(fHumain, "32", "alim1");
         data.extractDonnees(fSem, Datas.typeSem);
         data.extractDonnees(fTaille, Datas.typeTaille);
         data.extractDonnees(fCoord, Datas.typeCoord);
+        int nbFixation = data.coordonneesHumains.size();
+        
         
         Calc calc = new Calc();
         
-        List<Mot> parcourt = new ArrayList<>();
+        Mot but = calc.motPlusProche(-0.53,-0.44, data.listeMots);
+        List<Mot> modele = new ArrayList<>();
         List<Mot> humain = new ArrayList<>();
         
         Mot debut = calc.motPlusProche(0.8,-0.74, data.listeMots);
@@ -33,13 +36,15 @@ public class ModCognitive {
             motHumain = calc.motPlusProche(co.x, co.y, data.listeMots);
             humain.add(motHumain);
         }
-        parcourt.add(debut);
-        for (int i = 0; i < 20; i++) {
-            parcourt.add(calc.prochainMot(parcourt.get(i), data.listeMots));
+        modele.add(debut);
+        for (int i = 0; i < nbFixation; i++) {
+            modele.add(calc.prochainMot(modele.get(i), data.listeMots));
         }
         System.out.println(humain);
+        System.out.println(modele);
         
-
+        double ecart = calc.ecart(nbFixation, modele, humain, but);
+        System.out.println(ecart);
 
     }
     

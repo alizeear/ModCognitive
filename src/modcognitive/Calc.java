@@ -44,6 +44,15 @@ public class Calc {
         }
         return retour;
     }
+    public double ecart(int nbFixations, List<Mot> model, List<Mot> humain, Mot but){
+        
+        double result = 0;
+        for (int i = 0; i < nbFixations; i++) {
+            result += Math.abs(calcDistance(model.get(i), but) - calcDistance(humain.get(i), but));
+        }
+        
+        return result/nbFixations;
+    }
     /**
      * Recherche le mot le plus proche des coordonnées entrées en paramètre
      * @param x1
