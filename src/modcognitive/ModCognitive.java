@@ -17,7 +17,7 @@ public class ModCognitive {
         File fSem = new File("datas/Semantique/alim1sem_cos.txt");
         File fTaille = new File("datas/TailleMots/alim1sem_tailleV3.txt");
         File fHumain = new File("datas/Humains/dataHumains.txt");
-        data.fixationsHumain(fHumain, "32", "alim1");
+        data.fixationsHumain(fHumain, "3", "alim1");
         data.extractDonnees(fSem, Datas.typeSem);
         data.extractDonnees(fTaille, Datas.typeTaille);
         data.extractDonnees(fCoord, Datas.typeCoord);

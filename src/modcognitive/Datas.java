@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  *
- * @author Jo, Alizée
+ * @author Alizée ARNAUD, Jordan DAITA
  */
 public class Datas {
     public static final int typeCoord = 0;

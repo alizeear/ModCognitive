@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  *
- * @author Jo
+ * @author Alizée ARNAUD, Jordan DAITA
  */
 public class Calc {
      public static int TAILLE_MEMOIRE=10;
