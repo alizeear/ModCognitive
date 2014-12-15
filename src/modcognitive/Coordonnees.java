@@ -8,7 +8,7 @@ package modcognitive;
 
 /**
  *
- * @author Jo, Alizée
+ * @author Alizée ARNAUD, Jordan DAITA
  */
 public class Coordonnees {
     protected double x;

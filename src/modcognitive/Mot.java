@@ -8,7 +8,7 @@ package modcognitive;
 
 /**
  *
- * @author Jo
+ * @author Alizée ARNAUD, Jordan DAITA
  */
 public class Mot {
     protected String nom;
