@@ -36,15 +36,22 @@ public class ModCognitive {
             motHumain = calc.motPlusProche(co.x, co.y, data.listeMots);
             humain.add(motHumain);
         }
-        modele.add(debut);
-        for (int i = 0; i < nbFixation; i++) {
-            modele.add(calc.prochainMot(modele.get(i), data.listeMots));
+        for (int i = 1; i <= 30; i++) {
+            modele.add(debut);
+            for (int j = 0; j < nbFixation; j++) {
+                Calc.TAILLE_MEMOIRE = i;
+                modele.add(calc.prochainMot(modele.get(j), data.listeMots));
+            }
+            double ecart = calc.ecart(nbFixation, modele, humain, but);
+            System.out.println("Taille mémoire "+i+" : "+ecart);
+            modele.clear();
         }
-        System.out.println(humain);
+           
+        /*System.out.println(humain);
         System.out.println(modele);
         
         double ecart = calc.ecart(nbFixation, modele, humain, but);
-        System.out.println(ecart);
+        System.out.println(ecart);*/
 
     }
     

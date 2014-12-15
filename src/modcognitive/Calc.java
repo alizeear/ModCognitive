@@ -16,7 +16,7 @@ import java.util.Map;
  * @author Jo
  */
 public class Calc {
-     public final int TAILLE_MEMOIRE=15;
+     public static int TAILLE_MEMOIRE=10;
     /**
      * Fonctionne avec les Maps, on ne l'utilise donc plus
      * 
@@ -25,25 +25,7 @@ public class Calc {
      * @param mapCoord
      * @return 
      */
-    public String motPlusProche(double x1, double y1, HashMap<String, ArrayList> mapCoord){
-        double min = 999999;
-        String retour="";
-        for ( Map.Entry<String, ArrayList> entry : mapCoord.entrySet()) {
-            String key = entry.getKey();
-            if(entry.getValue().size() != 2)
-                throw new RuntimeException("Arraylist doit contenir des Double et avoir 2 valeurs");  
-            Double x2 = (Double) entry.getValue().get(0);
-            Double y2 = (Double) entry.getValue().get(1);
-            
-            double tmp = Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
-            if(tmp<min){
-                min = tmp;
-                retour = key;
-            }
-            
-        }
-        return retour;
-    }
+     
     public double ecart(int nbFixations, List<Mot> model, List<Mot> humain, Mot but){
         
         double result = 0;
@@ -61,7 +43,7 @@ public class Calc {
      * @return 
      */
     public Mot motPlusProche(double x1, double y1, List<Mot> listeMots){
-        double min = 999999;
+        double min = Double.MAX_VALUE;
         Mot retour = null;
         for (int i = 0; i < listeMots.size() ; i++) {
 
