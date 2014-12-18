@@ -16,7 +16,7 @@ import java.util.Map;
  * @author Alizée ARNAUD, Jordan DAITA
  */
 public class Calc {
-     public static int TAILLE_MEMOIRE=10;
+     public static int TAILLE_MEMOIRE=30;
     /**
      * Fonctionne avec les Maps, on ne l'utilise donc plus
      * 
@@ -26,14 +26,22 @@ public class Calc {
      * @return 
      */
      
-    public double ecart(int nbFixations, List<Mot> model, List<Mot> humain, Mot but){
+    /**
+     * Fonctionne avec les Maps, on ne l'utilise donc plus
+     * @param nbFixations
+     * @param model
+     * @param humain
+     * @param but
+     * @return
+     */
+    public static double ecart(List<Mot> model, List<Mot> humain, Mot but){
         
         double result = 0;
-        for (int i = 0; i < nbFixations; i++) {
+        for (int i = 0; i < humain.size(); i++) {
             result += Math.abs(calcDistance(model.get(i), but) - calcDistance(humain.get(i), but));
         }
-        
-        return result/nbFixations;
+        double size = humain.size();
+        return result/size;
     }
     /**
      * Recherche le mot le plus proche des coordonnées entrées en paramètre
@@ -42,12 +50,13 @@ public class Calc {
      * @param listeMots
      * @return 
      */
-    public Mot motPlusProche(double x1, double y1, List<Mot> listeMots){
+    public static Mot motPlusProche(double x1, double y1, List<Mot> listeMots){
         double min = Double.MAX_VALUE;
         Mot retour = null;
         for (int i = 0; i < listeMots.size() ; i++) {
 
-            double tmp = calcDistance(x1, y1, listeMots.get(i));
+            double tmp;
+            tmp = calcDistance(x1, y1, listeMots.get(i));
             if(tmp<min){
                 min = tmp;
                 retour = listeMots.get(i);
@@ -56,18 +65,28 @@ public class Calc {
         return retour;
     }
     
-    public double calcDistance(double x1, double y1, Mot mot){
+    public static Mot motCorrespondant(String str, List<Mot> listeMots){
+        for(Mot m:listeMots){
+            if(m.nom.equals(str)){
+                return m;
+            }
+        }
+        System.out.println("Le mot n'existe pas");
+        return null;
+    }
+    
+    public static double calcDistance(double x1, double y1, Mot mot){
         
         Double x2 = mot.x;
         Double y2 = mot.y;
         return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
     }
     
-    private double calcDistance(Mot courant, Mot get) {
+    public static double calcDistance(Mot courant, Mot get) {
         return calcDistance(courant.x, courant.y, get);
     }
     
-    public void calcSemantique(Mot courant, List<Mot> listeMots){
+    private static void calcSemantique(Mot courant, List<Mot> listeMots){
         for (int i = 0; i < listeMots.size() ; i++) {
             if(listeMots.get(i).distanceActuelle < 0.3)
                 listeMots.get(i).scoreSemantique += (courant.sem-0.3)*5;
@@ -77,7 +96,7 @@ public class Calc {
          }
     }
     
-    private void calcTaille(List<Mot> listeMots) {
+    private static void calcTaille(List<Mot> listeMots) {
         for (int i = 0; i < listeMots.size() ; i++) {
             listeMots.get(i).augmenterScore(listeMots.get(i).taille/10);
             //Plus la taille est grande plus le score du mot sera élevé
@@ -86,7 +105,7 @@ public class Calc {
          }
     }
 
-    private void calcMemoire(List<Mot> listeMots) {
+    private static void calcMemoire(List<Mot> listeMots) {
         for (int i = 0; i < listeMots.size() ; i++) {         
             if(listeMots.get(i).mem==TAILLE_MEMOIRE)
                 listeMots.get(i).augmenterScore(-1000);
@@ -99,7 +118,7 @@ public class Calc {
         
     }
     
-    public Mot prochainMot(Mot courant,  List<Mot> listeMots)
+    public static Mot prochainMot(Mot courant,  List<Mot> listeMots)
     {
         courant.mem  = TAILLE_MEMOIRE;
          for (int i = 0; i < listeMots.size() ; i++) {
@@ -121,6 +140,13 @@ public class Calc {
                  
          }
          return suivant;
+    }
+    
+    
+    public static void resetSemantique(List<Mot> li){
+        for(Mot m:li){
+            m.scoreSemantique=0;
+        }
     }
 
 

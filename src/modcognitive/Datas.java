@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -26,6 +27,7 @@ public class Datas {
     protected List<Mot> listeMots;
     protected List<Coordonnees> coordonneesHumains;
     protected int nbMots;
+    protected Map<String, List<Mot>> mapHumain; 
     
     Datas(int nbMots){
         this.nbMots = nbMots;
@@ -86,6 +88,40 @@ public class Datas {
                 coordonneesHumains.add(new Coordonnees(x, y));
             }
         }
+     }
+     
+      public void allFixationsHumain(File fichier) throws FileNotFoundException, IOException{
+        if(listeMots.size() == nbMots){
+            String ligne;
+            String key;
+            double x,y;
+            mapHumain = new HashMap<>();
+            FileReader lecteurDeFichier = new FileReader(fichier);
+            BufferedReader buff = new BufferedReader(lecteurDeFichier);
+            buff.readLine();
+            while ((ligne = buff.readLine()) != null) {
+                String[] array = ligne.split(",");
+                key = array[0]+"-"+array[1]+array[2];
+                if(mapHumain.get(key)== null){
+                    List<Mot> liste = new ArrayList<>();
+                    mapHumain.put(key, liste);
+                }
+                x = Double.parseDouble(array[7]);
+                y = Double.parseDouble(array[8]);
+                x = (x/1024)*2-1;
+                y = (((768-y)/768)*2)-1;
+                Mot tmp = Calc.motPlusProche(x, y, listeMots);
+                if(mapHumain.get(key).size()>0){
+                    if(!tmp.nom.equals(mapHumain.get(key).get(mapHumain.get(key).size()-1).nom))
+                        mapHumain.get(key).add(tmp);
+                }
+                else
+                    mapHumain.get(key).add(tmp);
+                
+            }
+        }
+        else
+              throw new RuntimeException("Liste de mot non initialisée");
      }
 
     @Override
