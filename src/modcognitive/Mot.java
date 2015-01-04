@@ -62,7 +62,7 @@ public class Mot {
 
     @Override
     public String toString() {
-        return "Mot{" + "nom=" + nom + ", sem=" + sem + ", x=" + x + ", y=" + y + ", mem=" + mem + ", taille=" + taille + "}\n";
+        return "Mot{" + "nom=" + nom + ", sem=" + sem + ", x=" + x + ", y=" + y + ", taille=" + taille + "}\n";
     }
     
 }

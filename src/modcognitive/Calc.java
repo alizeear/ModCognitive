@@ -6,17 +6,19 @@
 
 package modcognitive;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
  * @author Alizée ARNAUD, Jordan DAITA
  */
 public class Calc {
-     public static int TAILLE_MEMOIRE=30;
+     public static int TAILLE_MEMOIRE=15;
+     public static int AUGMENTE_INFLUENCE_SEMENTIQUE=5;
+     public static int AUGMENTE_INFLUENCE_SEMDISTANCE=5;
+     public static int DIMINUE_INFLUENCE_TAILLE=10;
+     public static int DIMINUE_INFLUENCE_TAILDISTANCE=6;
+ 
     /**
      * Fonctionne avec les Maps, on ne l'utilise donc plus
      * 
@@ -87,33 +89,36 @@ public class Calc {
     }
     
     private static void calcSemantique(Mot courant, List<Mot> listeMots){
-        for (int i = 0; i < listeMots.size() ; i++) {
-            if(listeMots.get(i).distanceActuelle < 0.3)
-                listeMots.get(i).scoreSemantique += (courant.sem-0.3)*5;
-            //Plus la sémantique est forte plus la zone autour de ce mot aura un score élevé
-            listeMots.get(i).augmenterScore(-courant.sem*listeMots.get(i).distanceActuelle*5);
-            // Plus la sémantique est forte plus les mots à faible distance auront un score élevé
+         for (Mot listeMot : listeMots) {
+             if (listeMot.distanceActuelle < 0.3) {
+                 listeMot.scoreSemantique += (courant.sem-0.3)*AUGMENTE_INFLUENCE_SEMENTIQUE;
+             }
+             //Plus la sémantique est forte plus la zone autour de ce mot aura un score élevé
+             listeMot.augmenterScore(-courant.sem * listeMot.distanceActuelle * AUGMENTE_INFLUENCE_SEMDISTANCE);
+             // Plus la sémantique est forte plus les mots à faible distance auront un score élevé
          }
     }
     
     private static void calcTaille(List<Mot> listeMots) {
-        for (int i = 0; i < listeMots.size() ; i++) {
-            listeMots.get(i).augmenterScore(listeMots.get(i).taille/10);
-            //Plus la taille est grande plus le score du mot sera élevé
-            listeMots.get(i).augmenterScore(-listeMots.get(i).distanceActuelle/6);
-            //Plus la distance est faible plus le score du mot sera élevé
+         for (Mot listeMot : listeMots) {
+             listeMot.augmenterScore(listeMot.taille / DIMINUE_INFLUENCE_TAILLE);
+             //Plus la taille est grande plus le score du mot sera élevé
+             listeMot.augmenterScore(-listeMot.distanceActuelle / DIMINUE_INFLUENCE_TAILDISTANCE);
+             //Plus la distance est faible plus le score du mot sera élevé
          }
     }
 
     private static void calcMemoire(List<Mot> listeMots) {
-        for (int i = 0; i < listeMots.size() ; i++) {         
-            if(listeMots.get(i).mem==TAILLE_MEMOIRE)
-                listeMots.get(i).augmenterScore(-1000);
-            // Le mot que l'on vient de voir a un score très faible
-            if(listeMots.get(i).mem != 0)
-               listeMots.get(i).mem--;
-            listeMots.get(i).augmenterScore(-listeMots.get(i).mem*100);
-            // Les mots que l'on a déjà vu ont un score plus faible (Plus il est récent plus son score est faible)
+         for (Mot listeMot : listeMots) {
+             if (listeMot.mem == TAILLE_MEMOIRE) {
+                 listeMot.augmenterScore(-1000);
+             }
+             // Le mot que l'on vient de voir a un score très faible
+             if (listeMot.mem != 0) {
+                 listeMot.mem--;
+             }
+             listeMot.augmenterScore(-listeMot.mem * 100);
+             // Les mots que l'on a déjà vu ont un score plus faible (Plus il est récent plus son score est faible)
          }
         
     }
@@ -121,23 +126,22 @@ public class Calc {
     public static Mot prochainMot(Mot courant,  List<Mot> listeMots)
     {
         courant.mem  = TAILLE_MEMOIRE;
-         for (int i = 0; i < listeMots.size() ; i++) {
-             listeMots.get(i).setScoreActuel(listeMots.get(i).scoreSemantique);
-             listeMots.get(i).setDistanceActuelle(calcDistance(courant, listeMots.get(i)));
+         for (Mot listeMot : listeMots) {
+             listeMot.setScoreActuel(listeMot.scoreSemantique);
+             listeMot.setDistanceActuelle(calcDistance(courant, listeMot));
          }
          calcSemantique(courant, listeMots);
          calcTaille(listeMots);
          calcMemoire(listeMots);
          
-         double max = courant.scoreActuel;
+         double max = Double.MIN_VALUE;
          Mot suivant = courant;
          
-         for (int i = 0; i < listeMots.size() ; i++) {
-             if(listeMots.get(i).scoreActuel > max){
-                 max = listeMots.get(i).scoreActuel;
-                 suivant = listeMots.get(i);
+         for (Mot listeMot : listeMots) {
+             if (listeMot.scoreActuel > max) {
+                 max = listeMot.scoreActuel;
+                 suivant = listeMot;
              }
-                 
          }
          return suivant;
     }
@@ -146,6 +150,8 @@ public class Calc {
     public static void resetSemantique(List<Mot> li){
         for(Mot m:li){
             m.scoreSemantique=0;
+            m.scoreActuel=0;
+            m.mem=0;
         }
     }
 

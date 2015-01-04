@@ -2,7 +2,6 @@ package modcognitive;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -24,7 +23,6 @@ public class ModCognitive {
         File fSem = new File("datas/Semantique/"+nomCarte+"sem_cos.txt");
         File fTaille = new File("datas/TailleMots/"+nomCarte+"sem_tailleV3.txt");
         File fHumain = new File("datas/Humains/dataHumains.txt");
-        //data.fixationsHumain(fHumain, "41", "coul");
         data.extractDonnees(fSem, Datas.typeSem);
         data.extractDonnees(fTaille, Datas.typeTaille);
         data.extractDonnees(fCoord, Datas.typeCoord);
@@ -34,6 +32,39 @@ public class ModCognitive {
         List<Mot> modele = new ArrayList<>();
         Mot debut = Calc.motPlusProche(XDEPART,YDEPART, data.listeMots);
         
+        /*
+            ------------------------------------------------------------------------------------------------------------------------------
+            Le code suivant permet de calculer l'écart entre le modèle et chacun des participants
+            pour une carte donnée sans variation de paramètre
+            Il affiche également les parcours de chaque humain et du modèle
+            ------------------------------------------------------------------------------------------------------------------------------
+        */
+        
+            for(Entry<String, List<Mot>> entry : data.mapHumain.entrySet()) {
+                String key = entry.getKey();
+                List<Mot> value = entry.getValue();
+                if(key.contains(nomCarte)){
+                    Calc.resetSemantique(data.listeMots);
+                    modele.clear();
+                    modele.add(debut);
+                    for (int j = 0; j < value.size(); j++) {
+                        modele.add(Calc.prochainMot(modele.get(j), data.listeMots));
+                    }
+                    System.out.println("----------------Humain : "+ key+"---------------");
+                    System.out.println("Ecart avec le modèle : "+ Calc.ecart(modele, value, but)+"\n");
+                    System.out.println(value);
+                }
+            }
+            System.out.println("--------------Modele--------------------");
+            System.out.println(modele);
+        /*
+        
+            ------------------------------------------------------------------------------------------------------------------------------
+            Le code suivant permet d'enregistrer dans un fichier au format CSV les écarts entre le modèle et chaque Humain 
+            pour une carte donnée avec un paramètre qui varie de 1 à 30    
+            ------------------------------------------------------------------------------------------------------------------------------
+            
+            
         FileWriter fw1;
         BufferedWriter out1;
         fw1 = new FileWriter("src/datas/"+nomCarte+".csv");
@@ -73,6 +104,7 @@ public class ModCognitive {
         }
         out1.flush();
         out1.close();
+                */
     }
     
 }

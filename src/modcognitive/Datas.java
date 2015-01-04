@@ -25,7 +25,6 @@ public class Datas {
     public static final int typeSem = 1;
     public static final int typeTaille = 2;
     protected List<Mot> listeMots;
-    protected List<Coordonnees> coordonneesHumains;
     protected int nbMots;
     protected Map<String, List<Mot>> mapHumain; 
     
@@ -70,24 +69,6 @@ public class Datas {
             count++;
         }
         buff.close();
-     }
-     
-     public void fixationsHumain(File fichier, String sujet, String carte) throws FileNotFoundException, IOException{
-        String ligne;
-        double x,y;
-        coordonneesHumains = new ArrayList<>();
-        FileReader lecteurDeFichier = new FileReader(fichier);
-        BufferedReader buff = new BufferedReader(lecteurDeFichier);
-        while ((ligne = buff.readLine()) != null) {
-            if(ligne.indexOf(sujet+','+carte)!=-1){
-                String[] array = ligne.split(",");
-                x = Double.parseDouble(array[7]);
-                y = Double.parseDouble(array[8]);
-                x = (x/1024)*2-1;
-                y = (((768-y)/768)*2)-1;
-                coordonneesHumains.add(new Coordonnees(x, y));
-            }
-        }
      }
      
       public void allFixationsHumain(File fichier) throws FileNotFoundException, IOException{
